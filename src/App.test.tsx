@@ -1,9 +1,19 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { BrowserRouter as Router } from "react-router-dom";
+import { fireEvent, render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+jest.mock("./Routing", () => () => (
+  <div data-testid="routing">Routing component</div>
+));
+
+describe("renders app", () => {
+  test("renders app component with correct structure", () => {
+    const { container } = render(
+      <Router>
+        <App />
+      </Router>
+    );
+    expect(container.querySelector("header")).toBeInTheDocument();
+    expect(screen.getByTestId("routing")).toBeInTheDocument();
+  });
 });
